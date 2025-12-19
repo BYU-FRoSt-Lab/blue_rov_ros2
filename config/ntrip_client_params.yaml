@@ -1,0 +1,17 @@
+ntrip_client_node:
+  ros__parameters:
+    # nmea_topic: "/nmea"
+    # ntrip_server: "localhost"
+    # ntrip_port: 2101
+    # ntrip_user: "username"
+    # ntrip_password: "password"
+
+    # RTCM corrections parameters
+    host: "192.168.167.134"
+    port: 2101
+    # output_topic: "/rtcm"
+    mountpoint: "REACH"
+    username: "reach"
+    password: "emlidreach"
+    authenticate: true
+
