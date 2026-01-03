@@ -49,6 +49,21 @@ tmux send-keys -t ${SESSION_NAME}:0.2 \
 ########################
 tmux new-window -t ${SESSION_NAME} -n monitor
 
+
+
+########################
+# Window 2: record
+########################
+tmux new-window -t ${SESSION_NAME} -n record
+tmux send-keys -t ${SESSION_NAME}:record \
+  "bash scripts/record.sh"
+
+tmux split-window -h -t ${SESSION_NAME}:record
+tmux send-keys -t ${SESSION_NAME}:record.1 \
+  "bash scripts/record.sh -p sbg"
+
+
+# Select the first window
 tmux select-window -t ${SESSION_NAME}:0
 # Attach to session
 tmux attach -t ${SESSION_NAME}
