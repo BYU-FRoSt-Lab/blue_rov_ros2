@@ -28,6 +28,7 @@ os_driver:
     timestamp_mode: ''
     # ptp_utc_tai_offset[optional]: UTC/TAI offset in seconds to apply when
     # TIME_FROM_PTP_1588 timestamp mode is used.
+    # TODO why USED TO BE -37.0 DOES THIS AFFECT ANYTHING
     ptp_utc_tai_offset: -37.0
     # udp_profile_lidar[optional]: lidar packet profile; possible values:
     # - LEGACY: not recommended

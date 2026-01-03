@@ -1,7 +1,3 @@
-# Multi-stage build to build some packages from source and install them
-#  TODO
-
-
 ARG ROS_DISTRO=humble 
 FROM ros:${ROS_DISTRO}
 
@@ -10,23 +6,16 @@ RUN apt-get update && apt-get install -y \
     ros-${ROS_DISTRO}-sbg-driver \
     ros-${ROS_DISTRO}-ouster-ros \
     ros-${ROS_DISTRO}-ntrip-client \
+    ros-${ROS_DISTRO}-rosbag2-storage-mcap \
     && rm -rf /var/lib/apt/lists/*
 
 
-# TODO remove below or just add to another dockerfile
-# Additional helpful tools
+# Additional optional helpful debug tools
 RUN apt-get update && apt-get install -y \
     netcat \
     net-tools \
     iputils-ping \
     && rm -rf /var/lib/apt/lists/*
-
-# GPSD and clients  ####### TODO merge with other apt install later
-# RUN apt-get update && apt-get install -y \
-#     gpsd \
-#     gpsd-clients \
-#     chrony \
-#     && rm -rf /var/lib/apt/lists/*
 
 
 RUN mkdir -p /root/ros2_ws/src
