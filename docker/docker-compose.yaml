@@ -1,17 +1,18 @@
 services:
-  ouster_lidar_sbg:
+  bluerov_ros2:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ouster_lidar_sbg:latest
-    container_name: ouster_lidar_sbg
+      args:
+        LABNAME: frostlab
+    image: bluerov_ros2:latest
+    container_name: bluerov_ros2
     privileged: true # Allows access to devices
     volumes:
-      - ../bags:/root/bags:rshared
-      - ../config:/root/config/:rw
+      - ../bags:/home/frostlab/bags:rshared
+      - ../config:/home/frostlab/config/:rw
       - /dev:/dev:rw # Mounts the device directory to allow access to devices
-      - ../packages:/root/ros2_ws/src:rw
-      # - ../config/chrony.conf:/root/chrony.conf:rw # Mount custom chrony config
+      - ../packages:/home/frostlab/ros2_ws/src:rw
       # - ./entrypoint.sh:/entrypoint.sh:rw # Custom entrypoint script
     environment:
       RCUTILS_COLORIZED_OUTPUT: 1 # Allows launch files to print colored text
