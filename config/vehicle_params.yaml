@@ -14,10 +14,6 @@
 
 # coug3: # Change this to match the vehicle name
 
-depth_convertor:
-  ros__parameters:
-    fluid_pressure_atm: 87250.0 # 87250.0 from testing, TODO: add units
-
 # gps_odom:
 #   ros__parameters:
 #     origin.latitude: 40.238833 # 40.2735 for Utah Lake
@@ -28,17 +24,28 @@ dvl_a50_node:
   ros__parameters:
     dvl_ip_address: "192.168.2.95"
 
-shallow_pressure_pub:
+shallow/pressure_pub:
   ros__parameters:
     sensor_type: 0
     i2c_bus: 1
     frame_id: 'shallow_pressure_link'
 
-deep_pressure_pub:
+deep/pressure_pub:
   ros__parameters:
     sensor_type: 1
     i2c_bus: 0
     frame_id: 'deep_pressure_link'
+
+/**/depth_converter:
+  ros__parameters:
+    fluid_density: 997.0
+    use_salinity_model: false
+    water_salinity_ppt: 35.0
+    fluid_pressure_atm: 87250.0
+    calibration_samples: 50
+    calibration_timeout_s: 5.0
+    calibration_max_variance: 100.0
+    calibration_max_offset: 40000.0
 
 vehicle_pinger:
   ros__parameters:
