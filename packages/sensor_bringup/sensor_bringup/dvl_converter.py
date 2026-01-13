@@ -2,11 +2,11 @@
 
 import rclpy
 from rclpy.node import Node
+from rclpy.qos import QoSProfile, qos_profile_sensor_data
 
 from geometry_msgs.msg import TwistWithCovarianceStamped
 from builtin_interfaces.msg import Time
 
-# CHANGE THIS import to your actual message package
 from dvl_msgs.msg import DVL
 
 
@@ -15,11 +15,18 @@ class DVLToTwist(Node):
     def __init__(self):
         super().__init__('dvl_to_twist')
 
+        # TODO if we want control of frame id 
+        self.declare_parameter('frame_id', 'dvl_link')
+        self.frame_id = self.get_parameter('frame_id').value
+
+        # Sensor-data QoS (equivalent to rmw_qos_profile_sensor_data in rclcpp)
+        sensor_qos = QoSProfile(**qos_profile_sensor_data.__dict__)
+
         self.sub = self.create_subscription(
             DVL,
             'dvl/data',
             self.dvl_callback,
-            10
+            sensor_qos
         )
 
         self.pub = self.create_publisher(
