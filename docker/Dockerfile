@@ -44,13 +44,14 @@ RUN groupadd -f -g 994 i2c && usermod -aG i2c ${LABNAME}
 
 RUN mkdir -p /root/ros2_ws/src
 
-USER ${LABNAME}
-
 # Dependency for i2c pressure sensors
 RUN pip3 install \
     smbus2 \
     pymavlink \
     --no-cache-dir
+    
+USER ${LABNAME}
+
 
 # --- Source ROS2 ---
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc \

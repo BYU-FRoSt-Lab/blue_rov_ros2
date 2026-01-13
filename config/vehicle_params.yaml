@@ -24,6 +24,10 @@ dvl_a50_node:
   ros__parameters:
     dvl_ip_address: "192.168.2.95"
 
+/**/pressure_pub:
+  ros__parameters:
+    publish_frequency: 20.0 # max 20 Hz for MS5837
+    
 shallow/pressure_pub:
   ros__parameters:
     sensor_type: 0
@@ -42,10 +46,18 @@ deep/pressure_pub:
     use_salinity_model: false
     water_salinity_ppt: 35.0
     fluid_pressure_atm: 87250.0
-    calibration_samples: 50
-    calibration_timeout_s: 5.0
-    calibration_max_variance: 100.0
+    min_calibration_samples: 500
+    calibration_timeout_s: 30.0
+    calibration_max_variance: 20.0
     calibration_max_offset: 40000.0
+    default_depth_variance: 0.5
+    use_calibration_variance: true
+    calibrate_on_startup: true
+
+
+/deep/depth_converter:
+  ros__parameters:
+    calibration_max_variance: 900.0
 
 vehicle_pinger:
   ros__parameters:
@@ -55,7 +67,7 @@ vehicle_pinger:
 
   # modem_ros_node:
   #   ros__parameters:
-  #     seatrac_serial_port: "/dev/ttyUSB0" # TODO fix the port with the SBG plugged in
+  #     seatrac_serial_port: "/dev/frost/rs232_connector_seatrac" # TODO fix the port with the SBG plugged in
 
   # nmea_converter:
   #   ros__parameters:

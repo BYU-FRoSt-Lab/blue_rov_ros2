@@ -48,13 +48,13 @@ def generate_launch_description():
 
     launch_actions.extend([
         DeclareLaunchArgument('namespace', default_value='/'),
-        # launch_ros.actions.Node(
-        #     package='dvl_a50', 
-        #     executable='dvl_a50_sensor', 
-        #     name='dvl_a50_node',
-        #     parameters=[param_file],
-        #     namespace=LaunchConfiguration('namespace'),
-        # ),
+        launch_ros.actions.Node(
+            package='dvl_a50', 
+            executable='dvl_a50_sensor', 
+            name='dvl_a50_node',
+            parameters=[param_file],
+            namespace=LaunchConfiguration('namespace'),
+        ),
         launch_ros.actions.Node(
             package='sensor_bringup', 
             executable='dvl_converter', 
@@ -100,7 +100,9 @@ def generate_launch_description():
         #     namespace=LaunchConfiguration('namespace'),
         #     output=output,LaunchConfiguration
         # ),
-        # Pressure sensor for blueROV
+
+
+        ################ Pressure sensor #########
         launch_ros.actions.Node(
             package='pressure_sensor',
             executable='pressure_pub',
@@ -112,7 +114,7 @@ def generate_launch_description():
         launch_ros.actions.Node(
             package='pressure_sensor', 
             executable='pressure_to_depth', 
-            name='shallow_depth_converter',
+            name='depth_converter',
             parameters=[param_file],
             namespace=[LaunchConfiguration('namespace'), 'shallow'],
         ),
@@ -128,10 +130,11 @@ def generate_launch_description():
         launch_ros.actions.Node(
             package='pressure_sensor', 
             executable='pressure_to_depth', 
-            name='deep_depth_converter',
+            name='depth_converter',
             parameters=[param_file],
             namespace=[LaunchConfiguration('namespace'), 'deep'],
         ),
+
         launch_ros.actions.Node(
             package='sbg_driver',
         #	name='sbg_device_1',
@@ -147,13 +150,13 @@ def generate_launch_description():
             namespace=LaunchConfiguration('namespace'),
             parameters=[nmea_config]
         ),
-        # launch_ros.actions.Node(
-        #     package='ntrip_client',
-        #     executable='ntrip_ros.py',
-        #     name='ntrip_client',
-        #     namespace=LaunchConfiguration('namespace'),
-        #     parameters=[ntrip_config],
-        # ),
+        launch_ros.actions.Node(
+            package='ntrip_client',
+            executable='ntrip_ros.py',
+            name='ntrip_client',
+            namespace=LaunchConfiguration('namespace'),
+            parameters=[ntrip_config],
+        ),
 
 
     ])

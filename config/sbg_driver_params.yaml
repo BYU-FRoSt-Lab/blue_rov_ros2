@@ -31,7 +31,7 @@
 
     uartConf:
       # Port Name
-      portName: "/dev/ttyUSB0" # TODO check this
+      portName: "/dev/frost/sbg" # TODO check this
 
       # Can I bump the baud rate?
       # Baude rate (4800 ,9600 ,19200 ,38400 ,115200 [default],230400 ,460800 ,921600)
