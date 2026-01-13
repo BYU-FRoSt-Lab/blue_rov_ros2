@@ -7,8 +7,8 @@
 # -----------------------------
 # Container / paths
 # -----------------------------
-CONTAINER="ouster_lidar_sbg"
-BAGS_PATH="/root/bags/ssd"
+CONTAINER="bluerov_ros2"
+BAGS_PATH="/home/frostlab/bags"
 
 # -----------------------------
 # Rosbag storage settings
@@ -25,21 +25,26 @@ MAX_CACHE_SIZE=200000000
 # -----------------------------
 # Topic presets
 # -----------------------------
-TOPICS_LIO="/imu/data /imu/nav_sat_fix /points /tf /tf_static"
+TOPICS_REQ="/imu/data /imu/mag /dvl/twist /dvl/data /dvl/position /deep/depth_data /deep/pressure/data /shallow/pressure/data /shallow/depth_data /imu/nav_sat_fix /tf /tf_static"
 
-TOPICS_SBG="/imu \
+TOPICS_EXTRA=" \
 /sbg/gps_pos \
 /sbg/ekf_quat \
 /sbg/ekf_nav \
 /sbg/imu_data \
 /sbg/imu_short \
 /sbg/utc_time \
+/sbg/mag \
 /imu/utc_ref \
+/imu/pos_ecef \
+/imu/velocity \
 /imu/mag \
 /sbg/mag \
+/nmea \
+/rtcm \
 /tf_static"
 
 # -----------------------------
 # Default topics (used if no -p or -t)
 # -----------------------------
-TOPICS="${TOPICS_LIO}"
+TOPICS="${TOPICS_REQ}"

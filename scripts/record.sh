@@ -131,7 +131,7 @@ fi
 # Record rosbag
 # --------------------------------------------------
 docker exec -it "${CONTAINER}" bash -c "
-  source /root/ros2_ws/install/setup.bash && \
+  source ~/ros2_ws/install/setup.bash && \
   ros2 bag record \
     -s ${STORAGE} \
     --storage-preset-profile ${PRESET} \
@@ -147,5 +147,5 @@ docker exec -it "${CONTAINER}" bash -c "
 echo "Copying config"
 docker exec "${CONTAINER}" bash -c "
   set -e
-  cp -r /root/config '${BAG_DIR}/config'
+  cp -r ~/config '${BAG_DIR}/config'
 "

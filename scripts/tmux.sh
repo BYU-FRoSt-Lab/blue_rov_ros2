@@ -1,7 +1,7 @@
 #!/bin/bash
 
-SESSION_NAME=ouster_sbg
-CONTAINER="ouster_lidar_sbg"
+SESSION_NAME=ros2
+CONTAINER="bluerov_ros2"
 
 # Start a new detached session
 tmux new-session -d -s ${SESSION_NAME}
@@ -26,15 +26,15 @@ tmux send-keys -t ${SESSION_NAME}:0.0 \
 tmux send-keys -t ${SESSION_NAME}:0.0 \
   "clear" C-m
 tmux send-keys -t ${SESSION_NAME}:0.0 \
-  "ros2 launch sensor_bringup sensor_platform_launch.py" 
+  "ros2 launch sensor_bringup bluerov_launch.py" 
 
-# Bottom-left pane
-tmux send-keys -t ${SESSION_NAME}:0.1 \
-  "docker exec -it ${CONTAINER} bash" C-m
-  tmux send-keys -t ${SESSION_NAME}:0.1 \
-  "clear" C-m
-tmux send-keys -t ${SESSION_NAME}:0.1 \
-  "ros2 launch sensor_bringup lidar_launch.py" 
+# # Bottom-left pane
+# tmux send-keys -t ${SESSION_NAME}:0.1 \
+#   "docker exec -it ${CONTAINER} bash" C-m
+#   tmux send-keys -t ${SESSION_NAME}:0.1 \
+#   "clear" C-m
+# tmux send-keys -t ${SESSION_NAME}:0.1 \
+#   "ros2 launch sensor_bringup lidar_launch.py" 
 
 # Right pane
 tmux send-keys -t ${SESSION_NAME}:0.2 \
