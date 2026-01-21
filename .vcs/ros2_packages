@@ -15,6 +15,10 @@ repositories:
     type: git
     url: https://github.com/BYU-FRoSt-Lab/pressure_sensor_ros2.git
     version: main
+  sbg_driver:
+    type: git
+    url: https://github.com/SBG-Systems/sbg_ros2_driver.git
+    version: master
   # seatrac:
   #   type: git
   #   url: https://github.com/BYU-FRoSt-Lab/seatrac-ros2.git
