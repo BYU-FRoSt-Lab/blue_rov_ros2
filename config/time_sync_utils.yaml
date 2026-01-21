@@ -1,6 +1,6 @@
-topic_monitor:
+/**/topic_monitor:
   ros__parameters:
-    topics_file: "/root/config/monitored_topics.yaml"
+    topics_file: "/home/frostlab/config/monitored_topics.yaml"
     relative_path: false
-    sync_threshold_warn_seconds: 0.1
+    sync_threshold_warn_seconds: 0.2
     sync_threshold_error_seconds: 1.0

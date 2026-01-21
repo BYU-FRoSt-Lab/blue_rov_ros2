@@ -1,0 +1,15 @@
+/dvl/data:
+  reliability: best_effort
+  history: keep_last
+  depth: 10
+
+/dvl/position:
+  reliability: best_effort
+  history: keep_last
+  depth: 10
+
+
+/tf_static:
+  durability: transient_local
+  history: keep_last
+  depth: 1

@@ -14,16 +14,16 @@
       #       output frequency.
       #       The frequency can be reduced in order to reduce CPU consumption but
       #       it can lead to miss data frame and less accurate time stamping.
-      frequency: 500  # WAS 400
+      frequency: 400
 
     odometry:
       # Enable ROS odometry messages.
       enable: true
       # Publish odometry transforms.
-      publishTf: true
+      publishTf: false
       # Odometry frame IDs.
-      odomFrameId: "odom"
-      baseFrameId: "base_link"
+      odomFrameId: "map"
+      baseFrameId: "bluerov2/imu_link"
       initFrameId: "map"
 
     # Configuration of the device with ROS.
@@ -66,8 +66,8 @@
       # 3 MARINE          Used in marine and underwater applications
       # 4 AIRPLANE        For fixed wings aircraft
       # 5 HELICOPTER      For rotary wing aircraft
-      motionProfile: 1
-
+      motionProfile: 3
+    
     # IMU_ALIGNMENT_LEVER_ARM
     imuAlignementLeverArm:
       # IMU X axis direction in vehicle frame
@@ -77,7 +77,7 @@
       # 3 ALIGNMENT_RIGHT     IMU Axis is turned in vehicle's right direction
       # 4 ALIGNMENT_UP        IMU Axis is turned in vehicle's up direction
       # 5 ALIGNMENT_DOWN      IMU Axis is turned in vehicle's down direction
-      axisDirectionX: 3
+      axisDirectionX: 0
       # IMU Y axis direction in vehicle frame
       # 0 ALIGNMENT_FORWARD   IMU Axis is turned in vehicle's forward direction
       # 1 ALIGNMENT_BACKWARD  IMU Axis is turned in vehicle's backward direction
@@ -85,7 +85,7 @@
       # 3 ALIGNMENT_RIGHT     IMU Axis is turned in vehicle's right direction
       # 4 ALIGNMENT_UP        IMU Axis is turned in vehicle's up direction
       # 5 ALIGNMENT_DOWN      IMU Axis is turned in vehicle's down direction
-      axisDirectionY: 0
+      axisDirectionY: 3
       # Residual roll error after axis alignment rad
       misRoll: 0.0
       # Residual pitch error after axis alignment rad
@@ -166,8 +166,8 @@
       # 104 Used on Ellipse-E to setup a connection to ublox in read only mode.
       # 106 Used on Ellipse-E to setup a connection to Novatel receiver in read only mode.
       # 107 Used on Ellipse-D by default
-      gnss_model_id: 107
-
+      gnss_model_id: 101
+    
       #GNSS primary antenna lever arm in IMU X axis (m)
       primaryLeverArmX: -0.07
       #GNSS primary antenna lever arm in IMU Y axis (m)
@@ -176,7 +176,7 @@
       primaryLeverArmZ: 0.05
       #GNSS primary antenna precise. Set to true if the primary lever arm has been accurately entered and doesn't need online re-estimation.
       primaryLeverPrecise: false   # TODO check this in the cad
-
+    
       #GNSS secondary antenna lever arm in IMU X axis (m)
       secondaryLeverArmX: 0.5
       #GNSS secondary antenna lever arm in IMU Y axis (m)
@@ -206,7 +206,7 @@
       # Odometer's gain Pulses/m
       gain: 4800.0
       # User gain average error (%)
-      gain_error: 5
+      gain_error: 10
       # Odometer's direction
       # false: positive
       # true: negative
@@ -269,10 +269,10 @@
       # Frame ID:
       # Note: If the frame convention is NED so the default frame ID is (imu_link_ned)
       #       else if the convention is ENU so the default frame ID is (imu_link)
-      frame_id: "imu_link"
-
+      frame_id: "bluerov2/imu_link"
+    
       # Status general, clock, com aiding, solution, heave
-      log_status: 0
+      log_status: 8
       # Includes IMU status, acc., gyro, temp delta speeds and delta angles values
       log_imu_data: 1
       # Includes roll, pitch, yaw and their accuracies on each axis
@@ -280,7 +280,7 @@
       # Includes the 4 quaternions values
       log_ekf_quat: 1
       # Position and velocities in NED coordinates with the accuracies on each axis
-      log_ekf_nav: 10
+      log_ekf_nav: 8
       # Velocity expressed in the INS body/vehicle frame
       log_ekf_vel_body: 0
       # Rotations rate and accelerations in the INS body/vehicle frame
@@ -323,10 +323,6 @@
       topic_name: nmea
       # Namespace where to publish topic
       namespace: ""
-
-      # serial_publish: true # Publish NMEA data on serial port
-      # serial_port: "/dev/tnt0" # Replace with the actual path to your virtual serial port
-                                  # For example: "/tmp/ttyV0", "/dev/pts/2", etc.
 
     rtcm:
       subscribe: true  # Set to true to enable RTCM subscription
