@@ -138,6 +138,7 @@ docker exec -it "${CONTAINER}" bash -c "
     ${MAX_CACHE_SIZE:+--max-cache-size ${MAX_CACHE_SIZE}} \
     ${DURATION:+-d ${DURATION}} \
     -o '${BAG_DIR}' \
+    --qos-profile-overrides-path ~/config/qos_record.yaml \
     ${TOPICS}
 "
 

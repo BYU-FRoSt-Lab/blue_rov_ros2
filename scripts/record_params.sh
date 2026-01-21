@@ -25,6 +25,8 @@ MAX_CACHE_SIZE=200000000
 # -----------------------------
 # Topic presets
 # -----------------------------
+ALL="-a"
+
 TOPICS_REQ="/imu/data /imu/mag /dvl/twist /dvl/data /dvl/position /deep/depth_data /deep/pressure/data /shallow/pressure/data /shallow/depth_data /imu/nav_sat_fix /tf /tf_static"
 
 TOPICS_EXTRA=" \
@@ -47,4 +49,4 @@ TOPICS_EXTRA=" \
 # -----------------------------
 # Default topics (used if no -p or -t)
 # -----------------------------
-TOPICS="${TOPICS_REQ}"
+TOPICS="${ALL}"
