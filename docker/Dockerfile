@@ -16,7 +16,7 @@ RUN useradd -ms /bin/bash ${LABNAME} \
 
 # System dependencies
 RUN apt-get update && apt-get install -y \
-    ros-${ROS_DISTRO}-sbg-driver \
+    # ros-${ROS_DISTRO}-sbg-driver \
     ros-${ROS_DISTRO}-ntrip-client \
     ros-${ROS_DISTRO}-rosbag2-storage-mcap \
     python3-pip \
