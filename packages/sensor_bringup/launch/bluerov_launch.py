@@ -47,7 +47,7 @@ def generate_launch_description():
     launch_actions = []
 
     launch_actions.extend([
-        DeclareLaunchArgument('namespace', default_value='/'),
+        DeclareLaunchArgument('namespace', default_value='bluerov2'),
         launch_ros.actions.Node(
             package='dvl_a50', 
             executable='dvl_a50_sensor', 
@@ -108,7 +108,7 @@ def generate_launch_description():
             executable='pressure_pub',
             name='pressure_pub',
             parameters=[param_file],
-            namespace=[LaunchConfiguration('namespace'), 'shallow'],
+            namespace=[LaunchConfiguration('namespace'), '/shallow'],
             output=output,
         ),
         launch_ros.actions.Node(
@@ -116,7 +116,7 @@ def generate_launch_description():
             executable='pressure_to_depth', 
             name='depth_converter',
             parameters=[param_file],
-            namespace=[LaunchConfiguration('namespace'), 'shallow'],
+            namespace=[LaunchConfiguration('namespace'), '/shallow'],
         ),
         # Deep Pressure sensor for blueROV
         launch_ros.actions.Node(
@@ -124,7 +124,7 @@ def generate_launch_description():
             executable='pressure_pub',
             name='pressure_pub',
             parameters=[param_file],
-            namespace=[LaunchConfiguration('namespace'), 'deep'],
+            namespace=[LaunchConfiguration('namespace'), '/deep'],
             output=output,
         ),
         launch_ros.actions.Node(
@@ -132,7 +132,7 @@ def generate_launch_description():
             executable='pressure_to_depth', 
             name='depth_converter',
             parameters=[param_file],
-            namespace=[LaunchConfiguration('namespace'), 'deep'],
+            namespace=[LaunchConfiguration('namespace'), '/deep'],
         ),
 
         launch_ros.actions.Node(

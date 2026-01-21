@@ -5,9 +5,11 @@ from rclpy.node import Node
 from rclpy.qos import QoSProfile, qos_profile_sensor_data
 
 from geometry_msgs.msg import TwistWithCovarianceStamped
+from nav_msgs.msg import Odometry
 from builtin_interfaces.msg import Time
+# from scipy.spatial.transform import Rotation as R
 
-from dvl_msgs.msg import DVL
+from dvl_msgs.msg import DVL, DVLDR
 
 
 class DVLToTwist(Node):
@@ -33,7 +35,56 @@ class DVLToTwist(Node):
             10
         )
 
+        self.pub_odom = self.create_publisher(
+          Odometry,
+          'dvl/odometry',
+          10
+        )
+        self.sub_odom = self.create_subscription(
+            DVLDR,
+            'dvl/position',
+            self.position_callback,
+            qos_profile_sensor_data
+        )
+
+
         self.get_logger().info('DVL → TwistWithCovarianceStamped converter started')
+
+    def position_callback(self, msg: DVLDR):
+        """Convert DVL dead-reckoned position to nav_msgs/Odometry."""
+
+        odom = Odometry()
+
+        # ---------- Header ----------
+        odom.header.frame_id = 'map'
+        odom.child_frame_id = self.frame_id
+
+        # DVLDR time is float64 seconds
+        sec = int(msg.time)
+        nanosec = int((msg.time - sec) * 1e9)
+        odom.header.stamp.sec = sec
+        odom.header.stamp.nanosec = nanosec
+
+        # ---------- Position ----------
+        odom.pose.pose.position.x = msg.position.x
+        odom.pose.pose.position.y = msg.position.y
+        odom.pose.pose.position.z = msg.position.z
+
+        # ---------- Orientation (Euler → quaternion via scipy) ----------
+        # quat = R.from_euler('xyz', [msg.roll, msg.pitch, msg.yaw]).as_quat()
+        # odom.pose.pose.orientation.x = quat[0]
+        # odom.pose.pose.orientation.y = quat[1]
+        # odom.pose.pose.orientation.z = quat[2]
+        # odom.pose.pose.orientation.w = quat[3]
+
+        # ---------- Pose covariance ----------
+        # Position variance from pos_std (assumed isotropic)
+        var = msg.pos_std ** 2
+        odom.pose.covariance[0] = var
+        odom.pose.covariance[7] = var
+        odom.pose.covariance[14] = var
+
+        self.pub_odom.publish(odom)
 
     def dvl_callback(self, msg: DVL):
 
