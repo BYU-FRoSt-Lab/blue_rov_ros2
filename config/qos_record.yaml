@@ -1,9 +1,9 @@
-/dvl/data:
+/bluerov2/dvl/data:
   reliability: best_effort
   history: keep_last
   depth: 10
 
-/dvl/position:
+/bluerov2/dvl/position:
   reliability: best_effort
   history: keep_last
   depth: 10
