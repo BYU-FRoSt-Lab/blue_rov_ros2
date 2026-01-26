@@ -3,7 +3,8 @@
 import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, qos_profile_sensor_data
-
+from geometry_msgs.msg import TransformStamped
+from tf2_ros import TransformBroadcaster
 from geometry_msgs.msg import TwistWithCovarianceStamped
 from nav_msgs.msg import Odometry
 from builtin_interfaces.msg import Time
@@ -21,6 +22,10 @@ class DVLToTwist(Node):
         # TODO make this not default to this
         self.declare_parameter('odom_frame_id', 'bluerov2/dvl_odom')
         self.odom_frame_id = self.get_parameter('odom_frame_id').value
+        self.declare_parameter('child_frame_id', '')
+        self.child_frame_id = self.get_parameter('child_frame_id').value
+        # TODO add param to publish the TF or not
+        self.tf_broadcaster = TransformBroadcaster(self)
 
         self.sub = self.create_subscription(
             DVL,
@@ -50,6 +55,28 @@ class DVLToTwist(Node):
 
         self.get_logger().info('DVL → TwistWithCovarianceStamped converter started')
 
+    def publish_odom_tf(self, odom: Odometry):
+        """
+        Publish odom → base_link TF using the odometry message.
+
+        This is required for navsat_transform_node.
+        """
+
+        tf = TransformStamped()
+
+        tf.header.stamp = odom.header.stamp
+        tf.header.frame_id = odom.header.frame_id
+        tf.child_frame_id = odom.child_frame_id
+
+        tf.transform.translation.x = odom.pose.pose.position.x
+        tf.transform.translation.y = odom.pose.pose.position.y
+        tf.transform.translation.z = odom.pose.pose.position.z
+
+        tf.transform.rotation = odom.pose.pose.orientation
+
+        self.tf_broadcaster.sendTransform(tf)
+
+
     def position_callback(self, msg: DVLDR):
         """Convert DVL dead-reckoned position to nav_msgs/Odometry."""
 
@@ -57,7 +84,10 @@ class DVLToTwist(Node):
 
         # ---------- Header ----------
         odom.header.frame_id = self.odom_frame_id
-        odom.child_frame_id = msg.header.frame_id
+        if self.child_frame_id:
+            odom.child_frame_id = self.child_frame_id
+        else:
+            odom.child_frame_id = msg.header.frame_id
 
         # DVLDR time is float64 seconds
         sec = int(msg.time)
@@ -94,6 +124,7 @@ class DVLToTwist(Node):
         odom.pose.covariance[14] = var
 
         self.pub_odom.publish(odom)
+        self.publish_odom_tf(odom)
 
     def dvl_callback(self, msg: DVL):
 
