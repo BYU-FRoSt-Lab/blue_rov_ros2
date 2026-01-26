@@ -29,6 +29,10 @@ setup(
     entry_points={
         'console_scripts': [
             'dvl_converter = sensor_bringup.dvl_converter:main',
+            'gps_odom = sensor_bringup.gps_odom:main',
+            'odom_anchor = sensor_bringup.odom_anchor:main',
+            'dummy_imu_odom_name = sensor_bringup.dummy_imu_odom_name:main',
+            'odom_to_navsat = sensor_bringup.odom_to_navsat:main',
         ],
     },
 )

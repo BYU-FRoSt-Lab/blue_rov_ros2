@@ -7,7 +7,8 @@ from rclpy.qos import QoSProfile, qos_profile_sensor_data
 from geometry_msgs.msg import TwistWithCovarianceStamped
 from nav_msgs.msg import Odometry
 from builtin_interfaces.msg import Time
-# from scipy.spatial.transform import Rotation as R
+from scipy.spatial.transform import Rotation as R
+import numpy as np
 
 from dvl_msgs.msg import DVL, DVLDR
 
@@ -16,7 +17,10 @@ class DVLToTwist(Node):
 
     def __init__(self):
         super().__init__('dvl_to_twist')
-
+        
+        # TODO make this not default to this
+        self.declare_parameter('odom_frame_id', 'bluerov2/dvl_odom')
+        self.odom_frame_id = self.get_parameter('odom_frame_id').value
 
         self.sub = self.create_subscription(
             DVL,
@@ -33,7 +37,7 @@ class DVLToTwist(Node):
 
         self.pub_odom = self.create_publisher(
           Odometry,
-          'dvl/odometry',
+          'dvl/odom',
           10
         )
         self.sub_odom = self.create_subscription(
@@ -52,7 +56,7 @@ class DVLToTwist(Node):
         odom = Odometry()
 
         # ---------- Header ----------
-        odom.header.frame_id = 'map'
+        odom.header.frame_id = self.odom_frame_id
         odom.child_frame_id = msg.header.frame_id
 
         # DVLDR time is float64 seconds
@@ -62,16 +66,25 @@ class DVLToTwist(Node):
         odom.header.stamp.nanosec = nanosec
 
         # ---------- Position ----------
+        # TODO CHANGE THIS BACK the conversion here NED TO ENU
         odom.pose.pose.position.x = msg.position.x
-        odom.pose.pose.position.y = msg.position.y
-        odom.pose.pose.position.z = msg.position.z
+        odom.pose.pose.position.y = -msg.position.y
+        odom.pose.pose.position.z = -msg.position.z
 
         # ---------- Orientation (Euler → quaternion via scipy) ----------
-        # quat = R.from_euler('xyz', [msg.roll, msg.pitch, msg.yaw]).as_quat()
-        # odom.pose.pose.orientation.x = quat[0]
-        # odom.pose.pose.orientation.y = quat[1]
-        # odom.pose.pose.orientation.z = quat[2]
-        # odom.pose.pose.orientation.w = quat[3]
+        # quat = R.from_euler('xyz', [msg.roll, msg.pitch, msg.yaw], degrees=True).as_quat()
+        ROT = R.from_euler('xyz', [msg.roll, msg.pitch, msg.yaw], degrees=True).as_matrix()
+        OFFSET = np.array([[1, 0, 0],
+                           [0, -1, 0],
+                           [0, 0, -1]])
+        ROT_ENU = OFFSET @ ROT @ OFFSET
+        quat = R.from_matrix(ROT_ENU).as_quat()
+
+
+        odom.pose.pose.orientation.x = quat[0]
+        odom.pose.pose.orientation.y = quat[1]
+        odom.pose.pose.orientation.z = quat[2]
+        odom.pose.pose.orientation.w = quat[3]
 
         # ---------- Pose covariance ----------
         # Position variance from pos_std (assumed isotropic)

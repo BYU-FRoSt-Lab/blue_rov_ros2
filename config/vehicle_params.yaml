@@ -7,6 +7,10 @@
     # https://www.ngdc.noaa.gov/geomag/calculators/magcalc.shtml?
 
     vehicle_ID: 3
+    origin:
+      latitude: 40.238833
+      longitude: -111.742249
+      altitude: 1367.00
 
 /**/pressure_pub:
   ros__parameters:
@@ -56,7 +60,6 @@ bluerov2: # Change this to match the vehicle name
         i2c_bus: 0
 
 
-  deep:
     depth_converter:
       ros__parameters:
         calibration_max_variance: 900.0
@@ -66,6 +69,41 @@ bluerov2: # Change this to match the vehicle name
       enable_ping: false
       ping_frequency_seconds: 4
       vehicles_in_mission: [1,2,15]
+
+
+  imu_odom_anchor:
+    ros__parameters:
+      local_odom_topic: imu/odom
+      global_odom_topic: gps/odom
+
+      map_frame: map
+      odom_frame: bluerov2/imu_odom
+      child_frame: bluerov2/imu_link
+
+      max_position_variance: 2.0     # meters^2
+      max_yaw_variance: 0.3          # rad^2
+  
+  dvl_odom_anchor:
+    ros__parameters:
+      local_odom_topic: dvl/odom
+      global_odom_topic: gps/odom
+
+      map_frame: map
+      odom_frame: bluerov2/dvl_odom
+      child_frame: bluerov2/dvl_link
+
+      max_position_variance: 2.0     # meters^2
+      max_yaw_variance: 0.3          # rad^2
+
+  odom_to_navsat:
+    ros__parameters:
+      odom_topic: imu/odom
+      output_topic: imu/fix
+
+  dvl_to_navsat:
+    ros__parameters:
+      odom_topic: dvl/odom
+      output_topic: dvl/fix
 
     # modem_ros_node:
     #   ros__parameters:

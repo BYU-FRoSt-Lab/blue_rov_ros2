@@ -18,7 +18,7 @@ repositories:
   sbg_driver:
     type: git
     url: https://github.com/SBG-Systems/sbg_ros2_driver.git
-    version: master
+    version: devel
   # seatrac:
   #   type: git
   #   url: https://github.com/BYU-FRoSt-Lab/seatrac-ros2.git
